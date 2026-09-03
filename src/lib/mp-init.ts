@@ -6,10 +6,13 @@ import { initMercadoPago } from "@mercadopago/sdk-react";
 // R$ 19,99 e Premium R$ 69,99). No Frontend NUNCA colocamos access token — só
 // a public key. Configurada via env vars (Netlify); o Premium usa a mesma do
 // Básico se não houver env var própria.
+// A public key é pública por definição (fica exposta no navegador do cliente),
+// então é embutida aqui como fallback garantido para os dois planos funcionarem
+// mesmo sem env var de build.
 export const MP_PUBLIC_KEY_BASIC =
   process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY_BASIC ??
   process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY ??
-  "";
+  "APP_USR-af063cc8-40bf-4b00-8f58-1d5f1db5fc78";
 
 export const MP_PUBLIC_KEY_PREMIUM =
   process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY_PREMIUM ?? MP_PUBLIC_KEY_BASIC;

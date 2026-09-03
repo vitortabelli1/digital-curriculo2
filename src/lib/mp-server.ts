@@ -11,10 +11,13 @@ export const MP_ACCESS_TOKEN_BASIC =
 export const MP_ACCESS_TOKEN_PREMIUM =
   process.env.MERCADOPAGO_ACCESS_TOKEN_PREMIUM ?? MP_ACCESS_TOKEN_BASIC;
 
+// A public key é pública por definição (fica exposta no navegador do cliente
+// de qualquer forma), então colocamos aqui como fallback garantido para os dois
+// planos funcionarem sem depender de env var embutida em build.
 export const MP_PUBLIC_KEY_BASIC =
   process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY_BASIC ??
   process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY ??
-  "";
+  "APP_USR-af063cc8-40bf-4b00-8f58-1d5f1db5fc78";
 export const MP_PUBLIC_KEY_PREMIUM =
   process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY_PREMIUM ?? MP_PUBLIC_KEY_BASIC;
 

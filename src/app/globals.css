@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #111111;
+  --section-alt: #f8f8f8;
+
+  /* Design system — Primary Orange */
+  --primary: #ff5a1f;
+  --primary-hover: #f04c16;
+  --primary-light: #ff7a45;
+
+  /* Textos */
+  --text-title: #111111;
+  --text-secondary: #6b7280;
+  --text-light: #ffffff;
+
+  /* Fundos */
+  --bg-card: #ffffff;
+  --bg-dark: #111111;
+
+  /* Bordas */
+  --border-light: #ececec;
+  --border-medium: #dadada;
+
+  /* Status */
+  --status-success: #22c55e;
+  --status-warning: #f59e0b;
+  --status-danger: #ef4444;
+  --status-info: #3b82f6;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-section: var(--section-alt);
+  --font-sans: var(--font-inter);
+  --font-inter: var(--font-inter);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #ffffff;
+    --foreground: #111111;
+  }
+}
+
+/* Animação de flutuação para mockups */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float {
+    animation: none;
+  }
+}
+
+::selection {
+  background: var(--primary-light);
+  color: #ffffff;
+}
+
+.logo span {
+  color: #111111;
+}

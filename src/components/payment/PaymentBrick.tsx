@@ -86,18 +86,33 @@ export function PaymentBrick({
   if (!publicKey) return null;
 
   const handleSubmit = async ({ formData }: { formData: SubmitFormData }) => {
-    const res = await fetch("/api/mercadopago/pay", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ formData, plan: planId }),
-    });
+    let res: Response;
+    try {
+      res = await fetch("/api/mercadopago/pay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ formData, plan: planId }),
+      });
+    } catch (err) {
+      // Falha de rede/TLS ao falar com nosso próprio servidor. Não rejeitamos a
+      // Promise (isso trava o Brick); apenas reportamos o erro ao usuário.
+      console.error("Erro de rede ao chamar /api/mercadopago/pay:", err);
+      onError("brick", "Não foi possível conectar ao servidor de pagamento. Tente novamente.");
+      return;
+    }
     const json = (await res.json().catch(() => ({}))) as {
       id?: number;
       status?: string;
       error?: string;
     };
     if (!res.ok || !json.id || !json.status) {
-      throw new Error(json?.error ?? "Falha ao criar o pagamento.");
+      // IMPORTANTE: retornar (e NÃO lançar) aqui. Lançar dentro do onSubmit faz
+      // o Brick ficar preso no estado de carregamento (botão trava). O SDK
+      // exibe o erro por conta própria quando a Promise resolve.
+      const msg = json?.error ?? `Falha ao criar o pagamento (HTTP ${res.status}).`;
+      console.error("Mercado Pago /pay retornou erro:", res.status, json);
+      onError("brick", msg);
+      return;
     }
     onCreated({ paymentId: json.id, status: json.status });
   };

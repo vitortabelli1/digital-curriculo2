@@ -43,6 +43,13 @@ export async function POST(request: Request) {
   const PLAN_DESCRIPTION = PLANS[plan].description;
 
   if (!ACCESS_TOKEN) {
+    // Diagnóstico: ajuda a identificar qual env var está presente na Vercel.
+    console.error("Mercado Pago /pay — access token ausente.", {
+      plan,
+      hasBasic: Boolean(process.env.MERCADOPAGO_ACCESS_TOKEN_BASIC),
+      hasGeneric: Boolean(process.env.MERCADOPAGO_ACCESS_TOKEN),
+      hasPremium: Boolean(process.env.MERCADOPAGO_ACCESS_TOKEN_PREMIUM),
+    });
     return NextResponse.json(
       { error: `Access token do Mercado Pago do plano ${plan} não configurado.` },
       { status: 501 }
